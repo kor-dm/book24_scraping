@@ -1,8 +1,8 @@
 from bs4 import BeautifulSoup
-from requests import get
 from fake_headers import Headers
 import re
 from .logging import no_log
+from .get_trying import try_get
 
 
 headers = Headers(browser="opera", os="lin", headers=True).generate()
@@ -33,7 +33,7 @@ def parse_item(item_url: str) -> dict:
     """
 
     try:
-        response = get(item_url, headers = headers)
+        response = try_get(item_url, headers = headers)
         soup = BeautifulSoup(response.text, "lxml")
         name = soup.find(class_ = "breadcrumbs__list").findChildren("li")[-1].text
         
@@ -63,7 +63,7 @@ def parse_site(configs: dict, logging: callable = no_log) -> None:
     i = 1
     while True:
         page_url = re.sub(regex, f"page-{i}", url)
-        response = get(page_url, headers = headers)
+        response = try_get(page_url, headers = headers)
 
         # In case there are no more pages
         if(response.status_code != 200): break
