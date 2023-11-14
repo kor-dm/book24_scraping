@@ -18,7 +18,7 @@ def write_data(result: dict, dir_path: str) -> int:
     Write product info into json file
     """
     try:
-        with open(f"{dir_path}/{result['Название']}", "w", encoding = "utf-8") as f:
+        with open(f"{dir_path}/{result['Название']}.json", "w", encoding = "utf-8") as f:
             dump(result, f, ensure_ascii = False, indent = 4)
         return 0
     except:
